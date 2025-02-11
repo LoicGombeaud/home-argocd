@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://argoproj.github.io/argo-helm
+    targetRevision: 7.8.0
+    chart: argo-cd
+    helm:
+      valuesObject:
+        global:
+          domain: argocd-home.loicgombeaud.com
+        configs:
+          cm:
+            timeout.reconciliation: 10s
+          params:
+            server.insecure: true
+        server:
+          ingress:
+            #annotations:
+            #  cert-manager.io/cluster-issuer: letsencrypt-prod
+            #  nginx.ingress.kubernetes.io/ssl-redirect: "true"
+            enabled: true
+            tls:
+            - hosts:
+              - argocd-home.loicgombeaud.com
+              secretName: argocd-tls
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
