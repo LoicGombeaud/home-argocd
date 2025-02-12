@@ -22,8 +22,8 @@ spec:
             server.insecure: true
         server:
           ingress:
-            #annotations:
-            #  cert-manager.io/cluster-issuer: letsencrypt-prod
+            annotations:
+              cert-manager.io/cluster-issuer: letsencrypt-prod
             #  nginx.ingress.kubernetes.io/ssl-redirect: "true"
             enabled: true
             tls:
